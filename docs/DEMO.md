@@ -15,14 +15,7 @@
 CI's deploy job uses a temporary cluster; it does not update the laptop cluster automatically. To demonstrate a persistent local rollout after changing application code:
 
 ```bash
-docker compose build
-minikube image load campuscrate-backend:local campuscrate-frontend:local
-helm upgrade campuscrate helm/campuscrate -n campuscrate \
-  -f helm/campuscrate/values-local.yaml --set monitoring.enabled=true \
-  --wait --wait-for-jobs
-kubectl -n campuscrate rollout restart deployment/frontend deployment/backend
-kubectl -n campuscrate rollout status deployment/frontend
-kubectl -n campuscrate rollout status deployment/backend
+MONITORING_ENABLED=true bash scripts/deploy-local.sh
 ```
 
 For immutable published images on an amd64 cluster, set `backend.tag` and `frontend.tag` to the successful run's full source SHA. The current CI images are linux/amd64; the local Apple-silicon demo uses locally built arm64 images. Private GHCR packages require a pull Secret through `imagePullSecrets`.

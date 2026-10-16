@@ -92,6 +92,16 @@ The default tests use isolated in-memory SQLite databases; PostgreSQL-only concu
 
 ## Deploy to local Kubernetes
 
+For a reproducible local rollout tagged with the exact committed source revision:
+
+```bash
+bash scripts/deploy-local.sh
+# If the monitoring stack is installed:
+MONITORING_ENABLED=true bash scripts/deploy-local.sh
+```
+
+The script builds native laptop images with SHA tags, deploys them with Helm and verifies the running API reports that same revision. Public CI images target linux/amd64; this local build supports the Apple-silicon demonstration.
+
 Prerequisites: Docker, Minikube, kubectl, Helm and Python 3. The chart requires explicit image tags and an existing Secret; credentials are generated locally and are never stored in chart values.
 
 ```bash
