@@ -3,7 +3,8 @@
 set -euo pipefail
 project_root="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$project_root"
-git diff --quiet -- backend frontend helm || { echo 'Commit application/chart changes before tagging a deployment.' >&2; exit 1; }
+source_state="$(git status --porcelain --untracked-files=all -- backend frontend helm)"
+[[ -z "$source_state" ]] || { echo 'Commit application/chart changes before tagging a deployment.' >&2; exit 1; }
 source_sha="$(git rev-parse HEAD)"
 monitoring_enabled="${MONITORING_ENABLED:-false}"
 case "$monitoring_enabled" in true|false) ;; *) echo 'MONITORING_ENABLED must be true or false.' >&2; exit 1 ;; esac

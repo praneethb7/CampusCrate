@@ -1,0 +1,1 @@
+{"service":"CampusCrate API","version":"1.0.0","release":"2ae39d13a3040ca4e3bb353e558fb46cda588278","docs":"/docs"}

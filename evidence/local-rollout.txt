@@ -1,0 +1,143 @@
+* ingress is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
+You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
+* After the addon is enabled, please run "minikube tunnel" and your ingress resources would be available at "127.0.0.1"
+  - Using image registry.k8s.io/ingress-nginx/controller:v1.15.1
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+  - Using image registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.6.9
+* Verifying ingress addon...
+* The 'ingress' addon is enabled
+* metrics-server is an addon maintained by Kubernetes. For any concerns contact minikube on GitHub.
+You can view the list of minikube maintainers at: https://github.com/kubernetes/minikube/blob/master/OWNERS
+  - Using image registry.k8s.io/metrics-server/metrics-server:v0.9.0
+* The 'metrics-server' addon is enabled
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 613B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.12-alpine
+#2 DONE 2.2s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 98B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 37.56kB done
+#4 DONE 0.0s
+
+#5 [builder 1/4] FROM docker.io/library/python:3.12-alpine@sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4
+#5 resolve docker.io/library/python:3.12-alpine@sha256:1b668429b3511ab407d8e00648891631b0b1a4d7e15e3ca70f38ab5b91ad4ab4 done
+#5 DONE 0.0s
+
+#6 [stage-1 2/7] RUN addgroup -g 10001 app && adduser -D -u 10001 -G app app
+#6 CACHED
+
+#7 [builder 2/4] WORKDIR /build
+#7 CACHED
+
+#8 [builder 3/4] COPY requirements.txt .
+#8 CACHED
+
+#9 [builder 4/4] RUN pip install --prefix=/install -r requirements.txt
+#9 CACHED
+
+#10 [stage-1 3/7] WORKDIR /app
+#10 CACHED
+
+#11 [stage-1 4/7] COPY --from=builder /install /usr/local
+#11 CACHED
+
+#12 [stage-1 5/7] COPY --chown=10001:10001 app ./app
+#12 DONE 0.0s
+
+#13 [stage-1 6/7] COPY --chown=10001:10001 alembic ./alembic
+#13 DONE 0.0s
+
+#14 [stage-1 7/7] COPY --chown=10001:10001 alembic.ini .
+#14 DONE 0.0s
+
+#15 exporting to image
+#15 exporting layers 0.0s done
+#15 exporting manifest sha256:759388d4c6133794289f739699f14a8e97241a84b34ae67ad6f9441ef48aa989 done
+#15 exporting config sha256:0230a15a0e8716d140c1281ed5922ee238577ca807b75aa5957376b3ba7fd994 done
+#15 exporting attestation manifest sha256:38806ce1380fd4c0aa14a9cff0595d9ae225f692becc886c4f6ed0f0db1ed9b5 done
+#15 exporting manifest list sha256:35ef8c9fdc6ea04a48a9f8fb6674f0ba3b73efc95baa200f08883d94f79ffebb done
+#15 naming to docker.io/library/campuscrate-backend:2ae39d13a3040ca4e3bb353e558fb46cda588278 done
+#15 unpacking to docker.io/library/campuscrate-backend:2ae39d13a3040ca4e3bb353e558fb46cda588278 0.0s done
+#15 DONE 0.1s
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 311B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24-alpine
+#2 ...
+
+#3 [internal] load metadata for docker.io/nginxinc/nginx-unprivileged:stable-alpine
+#3 DONE 1.4s
+
+#2 [internal] load metadata for docker.io/library/node:24-alpine
+#2 DONE 1.4s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 63B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 55.68kB done
+#5 DONE 0.0s
+
+#6 [stage-1 1/3] FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:782bb89768cc87b7f95c18b95baa1af250e5d451f26794f59363540161147c01
+#6 resolve docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:782bb89768cc87b7f95c18b95baa1af250e5d451f26794f59363540161147c01 done
+#6 DONE 0.0s
+
+#7 [build 1/6] FROM docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f
+#7 resolve docker.io/library/node:24-alpine@sha256:44fce696f38ba8c987c4db89954051000bbd05ffd8d8659ba15ed4a8602e937f done
+#7 DONE 0.0s
+
+#8 [build 6/6] RUN npm run build
+#8 CACHED
+
+#9 [build 2/6] WORKDIR /app
+#9 CACHED
+
+#10 [build 3/6] COPY package*.json ./
+#10 CACHED
+
+#11 [build 4/6] RUN npm ci
+#11 CACHED
+
+#12 [build 5/6] COPY . .
+#12 CACHED
+
+#13 [stage-1 2/3] COPY --from=build /app/dist /usr/share/nginx/html
+#13 CACHED
+
+#14 [stage-1 3/3] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#14 CACHED
+
+#15 exporting to image
+#15 exporting layers done
+#15 exporting manifest sha256:a692f3602cfcdbc329a1ad43348ffaafdb755d350e5c60987f7d2f2a4a23a827 done
+#15 exporting config sha256:7288b1511a7b80ff7d10995951113567a7e01e73e5d3475cf44234090561be6e done
+#15 exporting attestation manifest sha256:8646fe31e3b188de32a86babd3f1d1eb3d2bfd56152011b50b38ce846bf406df done
+#15 exporting manifest list sha256:6cffd1a5a0e84ad008104cd91fc3a00a9887866bb7babf9f1ed102d82311660a done
+#15 naming to docker.io/library/campuscrate-frontend:2ae39d13a3040ca4e3bb353e558fb46cda588278 done
+#15 unpacking to docker.io/library/campuscrate-frontend:2ae39d13a3040ca4e3bb353e558fb46cda588278 done
+#15 DONE 0.0s
+namespace/campuscrate unchanged
+Release "campuscrate" has been upgraded. Happy Helming!
+NAME: campuscrate
+LAST DEPLOYED: Fri Oct 16 13:48:03 2026
+NAMESPACE: campuscrate
+STATUS: deployed
+REVISION: 6
+DESCRIPTION: Upgrade complete
+TEST SUITE: None
+deployment "backend" successfully rolled out
+deployment "frontend" successfully rolled out
+{"service": "CampusCrate API", "version": "1.0.0", "release": "2ae39d13a3040ca4e3bb353e558fb46cda588278", "docs": "/docs"}
+Verified local rollout of source revision 2ae39d13a3040ca4e3bb353e558fb46cda588278

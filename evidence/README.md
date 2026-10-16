@@ -10,8 +10,13 @@ Captured from the actual local stack and GitHub Actions on 16 October 2026.
 | `04-mobile-browser.jpg` | Mobile viewport screenshot |
 | `05-prometheus-targets.jpg` | Backend scrape pool UP |
 | `06-actions-success.jpg` | Public GitHub Actions success page |
-| `07-pytest-output.jpg` through `12-commit-history.jpg` | Screenshots of the raw-output browser viewer, clearly labelled |
-| `pytest.txt` | Local 15-test run and coverage |
+| `07-pytest-output.jpg` through `11-frontend-scan.jpg` | Screenshots of the raw-output browser viewer, clearly labelled |
+| `12-commit-history.jpg` | Public GitHub commit history, only praneethb7 |
+| `13-ghcr-backend.jpg`, `14-ghcr-frontend.jpg` | Public SHA-tagged GHCR package pages |
+| `registry-backend.json`, `registry-frontend.json` | Anonymous pull verification and content digests |
+| `deployed-release.txt`, `local-rollout.txt` | Exact-source local Helm rollout and API revision verification |
+| `15-metrics-output.jpg`, `16-helm-output.jpg`, `17-deployed-release.jpg` | Actual metrics, Helm release and verified API source revision in the labelled output viewer |
+| `pytest.txt` | 18-test run against isolated PostgreSQL and coverage |
 | `compose.txt` | Actual healthy Compose services |
 | `kubernetes.txt`, `helm.txt` | Workloads, Services, Ingress, HPA and Helm release |
 | `database.txt` | Actual PostgreSQL tables, migration revision and inventory |

@@ -1,0 +1,7 @@
+{
+  "image": "ghcr.io/praneethb7/campuscrate-web:056b48f5567576a26e75502633a25b1e87934555",
+  "digest": "sha256:295031d9afdff6d8d8fcfdcc5ca517d38f805d8a3b3d84887016e649c472a3c2",
+  "media_type": "application/vnd.docker.distribution.manifest.v2+json",
+  "anonymous_pull": true,
+  "verified_at": "2026-10-16T08:14:27.597875+00:00"
+}

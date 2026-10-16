@@ -1,6 +1,6 @@
 # Security scan record
 
-[Successful delivery run](https://github.com/praneethb7/CampusCrate/actions/workflows/campuscrate.yml) · commit `82ec393528fe2e5d30861af71c05fa104e8929f0`.
+[Successful delivery run](https://github.com/praneethb7/CampusCrate/actions/runs/38872115532) · commit `056b48f5567576a26e75502633a25b1e87934555`.
 
 Trivy scanned both container images, including their operating-system packages and Python dependencies, and the workflow fails on any HIGH or CRITICAL finding. The final Alpine-based images passed that gate with zero findings at those severities; the raw reports are in [backend](../evidence/security-backend/trivy-backend.txt) and [frontend](../evidence/security-frontend/trivy-frontend.txt). A clean report describes the scanner database and packages at that run; it does not guarantee that future vulnerabilities or application logic flaws do not exist.
 

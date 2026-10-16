@@ -1,2 +1,2 @@
 NAME       	NAMESPACE  	REVISION	UPDATED                             	STATUS  	CHART            	APP VERSION
-campuscrate	campuscrate	4       	2026-10-16 13:11:58.393346 +0530 IST	deployed	campuscrate-1.0.0	1.0.0      
+campuscrate	campuscrate	6       	2026-10-16 13:48:03.354764 +0530 IST	deployed	campuscrate-1.0.0	1.0.0      
