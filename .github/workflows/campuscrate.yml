@@ -1,0 +1,178 @@
+name: CampusCrate delivery
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: campuscrate-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: campuscrate
+          POSTGRES_PASSWORD: test-only-password
+          POSTGRES_DB: campuscrate_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U campuscrate -d campuscrate_test"
+          --health-interval 5s --health-timeout 5s --health-retries 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: {python-version: '3.12', cache: pip, cache-dependency-path: backend/requirements*.txt}
+      - run: pip install -r requirements-dev.txt
+        working-directory: backend
+      - name: Lint and test against isolated PostgreSQL
+        working-directory: backend
+        env:
+          TEST_DATABASE_URL: postgresql+psycopg://campuscrate:test-only-password@localhost:5432/campuscrate_test
+        run: |
+          ruff check .
+          pytest -v --cov=app --cov-fail-under=90 --junitxml=results.xml
+      - name: Validate migration upgrade and downgrade
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql+psycopg://campuscrate:test-only-password@localhost:5432/campuscrate_test
+        run: |
+          alembic upgrade head
+          alembic check
+          alembic downgrade base
+          alembic upgrade head
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: {node-version: '24', cache: npm, cache-dependency-path: frontend/package-lock.json}
+      - run: npm ci && npm run build
+        working-directory: frontend
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+      - run: helm lint helm/campuscrate -f helm/campuscrate/values-local.yaml
+      - uses: hashicorp/setup-terraform@dfe3c3f87815947d99a8997f908cb6525fc44e9e # v4.0.1
+      - name: Validate infrastructure without AWS access
+        run: |
+          terraform -chdir=terraform fmt -check
+          terraform -chdir=terraform init -backend=false
+          terraform -chdir=terraform validate
+          terraform -chdir=terraform test
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with: {name: test-results, path: backend/results.xml}
+  build-scan-publish:
+    needs: test
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        component: [backend, frontend]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Build candidate image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: ${{ matrix.component }}
+          load: true
+          labels: |
+            org.opencontainers.image.source=https://github.com/praneethb7/CampusCrate
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.title=CampusCrate ${{ matrix.component }}
+            org.opencontainers.image.description=Campus equipment inventory and lending
+          tags: ghcr.io/praneethb7/${{ matrix.component == 'backend' && 'campuscrate-api' || 'campuscrate-web' }}:${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.component }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.component }}
+      - name: Trivy HIGH and CRITICAL gate
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          image-ref: ghcr.io/praneethb7/${{ matrix.component == 'backend' && 'campuscrate-api' || 'campuscrate-web' }}:${{ github.sha }}
+          format: table
+          output: trivy-${{ matrix.component }}.txt
+          exit-code: '1'
+          ignore-unfixed: false
+          vuln-type: os,library
+          severity: HIGH,CRITICAL
+      - name: Print security report
+        if: always()
+        run: cat trivy-${{ matrix.component }}.txt
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: trivy-${{ matrix.component }}
+          path: trivy-${{ matrix.component }}.txt
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish tested and scanned image
+        if: github.event_name != 'pull_request'
+        run: docker push ghcr.io/praneethb7/${{ matrix.component == 'backend' && 'campuscrate-api' || 'campuscrate-web' }}:${{ github.sha }}
+      - name: Record published registry digest
+        if: github.event_name != 'pull_request'
+        run: python scripts/registry_receipt.py ${{ github.sha }} ${{ matrix.component }} > registry-${{ matrix.component }}.json
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: github.event_name != 'pull_request'
+        with:
+          name: registry-${{ matrix.component }}
+          path: registry-${{ matrix.component }}.json
+      - name: Export candidate for Kubernetes deployment
+        if: github.event_name == 'pull_request'
+        run: docker save ghcr.io/praneethb7/${{ matrix.component == 'backend' && 'campuscrate-api' || 'campuscrate-web' }}:${{ github.sha }} -o /tmp/${{ matrix.component }}.tar
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: github.event_name == 'pull_request'
+        with:
+          name: image-${{ matrix.component }}
+          path: /tmp/${{ matrix.component }}.tar
+          retention-days: 1
+  deploy-smoke:
+    needs: build-scan-publish
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        if: github.event_name == 'pull_request'
+        with: {pattern: image-*, path: /tmp/images, merge-multiple: true}
+      - uses: helm/kind-action@1544676c07bb3570fcb70166beaa07c4528fd4aa # v1.15.1
+        with: {cluster_name: campuscrate}
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+      - name: Load scanned pull-request images
+        if: github.event_name == 'pull_request'
+        run: |
+          kind load image-archive /tmp/images/backend.tar --name campuscrate
+          kind load image-archive /tmp/images/frontend.tar --name campuscrate
+      - name: Deploy with Helm
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          password=$(openssl rand -hex 24)
+          kubectl -n campuscrate create secret generic campuscrate-db \
+            --from-literal=POSTGRES_PASSWORD="$password" \
+            --from-literal=DATABASE_URL="postgresql+psycopg://campuscrate:$password@postgres:5432/campuscrate"
+          pull_policy=Always
+          if [ "${{ github.event_name }}" = "pull_request" ]; then pull_policy=Never; fi
+          helm upgrade --install campuscrate helm/campuscrate -n campuscrate \
+            --set backend.tag=${{ github.sha }} --set frontend.tag=${{ github.sha }} \
+            --set autoscaling.enabled=false --set ingress.enabled=false \
+            --set imagePullPolicy="$pull_policy" --wait --wait-for-jobs --timeout 5m
+      - name: Exercise deployed inventory and loan lifecycle
+        run: |
+          kubectl -n campuscrate port-forward svc/frontend 3000:8080 > /tmp/port-forward.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://localhost:3000/health && break || sleep 2; done
+          python scripts/smoke.py http://localhost:3000
+          kubectl -n campuscrate get pods,svc,hpa
+          helm list -n campuscrate
+          kubectl -n campuscrate get pods -o custom-columns=NAME:.metadata.name,IMAGE:.spec.containers[0].image,DIGEST:.status.containerStatuses[0].imageID
+      - name: Cluster diagnostics
+        if: failure()
+        run: |
+          kubectl -n campuscrate get pods,jobs,events
+          kubectl -n campuscrate logs -l app=campuscrate-backend --all-containers --tail=100
+      - name: Remove test cluster
+        if: always()
+        run: kind delete cluster --name campuscrate

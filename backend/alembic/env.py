@@ -3,7 +3,9 @@ from app.database import Base, engine
 from app import models  # noqa: F401
 
 if context.is_offline_mode():
-    context.configure(url=str(engine.url), target_metadata=Base.metadata, literal_binds=True)
+    context.configure(
+        url=str(engine.url), target_metadata=Base.metadata, literal_binds=True
+    )
     with context.begin_transaction():
         context.run_migrations()
 else:

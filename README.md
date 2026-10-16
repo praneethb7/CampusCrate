@@ -1,6 +1,6 @@
 # CampusCrate — campus equipment lending
 
-[![CampusCrate delivery](https://github.com/praneethb7/devOps_Assignment/actions/workflows/campuscrate.yml/badge.svg)](https://github.com/praneethb7/devOps_Assignment/actions/workflows/campuscrate.yml)
+[![CampusCrate delivery](https://github.com/praneethb7/CampusCrate/actions/workflows/campuscrate.yml/badge.svg)](https://github.com/praneethb7/CampusCrate/actions/workflows/campuscrate.yml)
 
 CampusCrate is an original equipment inventory and lending application. Students can borrow shared campus resources, administrators can track inventory and due dates, and returned items become available again. It uses React, FastAPI, PostgreSQL, SQLAlchemy and Alembic.
 
@@ -33,7 +33,7 @@ flowchart LR
   Terraform --> AWS[VPC / subnets / NAT / EKS / worker nodes]
 ```
 
-CI deploys the exact scanned images to a temporary kind cluster, exercises the application through Nginx and removes that cluster. The persistent demonstration runs on local Minikube. AWS infrastructure is **code only**: no AWS resources were provisioned, no real AWS plan/apply/destroy evidence is claimed. See [validation and limitations](docs/VALIDATION.md).
+On `main`, CI deploys SHA-tagged images directly from public GHCR to a temporary kind cluster, exercises the application through Nginx and removes that cluster. Pull-request candidates are transferred as artifacts without publication. The persistent demonstration runs on local Minikube. AWS infrastructure is **code only**: no AWS resources were provisioned, no real AWS plan/apply/destroy evidence is claimed. See [validation and limitations](docs/VALIDATION.md).
 
 ## Run with Docker Compose
 
@@ -74,10 +74,11 @@ ruff check .
 pytest -v --cov=app --cov-report=term-missing
 ```
 
-The default tests use isolated in-memory SQLite databases; CI runs the same tests against a dedicated PostgreSQL service via `TEST_DATABASE_URL`. The application database is never used by tests. CI separately exercises migration upgrade, schema-drift detection, downgrade and re-upgrade.
+The default tests use isolated in-memory SQLite databases; PostgreSQL-only concurrency tests are skipped in that mode. CI runs all 18 tests against a dedicated PostgreSQL service via `TEST_DATABASE_URL`, including six borrowers competing for two units and two simultaneous returns. Test database names must end in `_test` to guard against accidental production use. The application database is never used by tests. CI separately exercises migration upgrade, schema-drift detection, downgrade and re-upgrade.
 
 | Method | Path | Purpose |
 |---|---|---|
+| GET | `/` | Service metadata and source release |
 | GET | `/health` | Process liveness |
 | GET | `/ready` | Database and schema readiness; 503 on failure |
 | GET | `/metrics` | Prometheus request counters and duration histograms |
@@ -149,12 +150,12 @@ Metrics Server must have collected fresh samples; recently started pods can temp
 
 ## CI/CD and security
 
-The workflow lives at the repository root: [campuscrate.yml](../.github/workflows/campuscrate.yml). It triggers on capstone pushes to `main`, pull requests and manual dispatch.
+The workflow lives at the repository root: [campuscrate.yml](.github/workflows/campuscrate.yml). It triggers on every push to `main`, pull requests and manual dispatch. Official action releases are pinned to immutable commit SHAs, and runners use Ubuntu 24.04.
 
 1. Lint, isolated PostgreSQL tests, migration checks, frontend production build, Helm lint and Terraform validation/tests.
 2. Build frontend and backend images. Trivy scans OS and application packages for HIGH and CRITICAL vulnerabilities, including unfixed findings; a nonzero exit blocks publication.
-3. Publish successful candidates to `ghcr.io/praneethb7/campuscrate-backend:<commit-SHA>` and `ghcr.io/praneethb7/campuscrate-frontend:<commit-SHA>` on branch pushes.
-4. Transfer the exact scanned images as short-lived artifacts to a temporary kind cluster. Deploy with Helm, run the lending smoke test, print cluster diagnostics and delete the cluster.
+3. Publish successful candidates to `ghcr.io/praneethb7/campuscrate-api:<commit-SHA>` and `ghcr.io/praneethb7/campuscrate-web:<commit-SHA>` on branch pushes.
+4. On branch pushes, Kubernetes pulls the published SHA tags directly from GHCR; pull-request candidates are transferred as short-lived artifacts to a temporary kind cluster. Deploy with Helm, run the lending smoke test, print cluster diagnostics and delete the cluster.
 
 Pull requests build and scan but do not publish. Reports and test results are retained as Actions artifacts. See [security results](docs/SECURITY.md) for actual findings and remediation.
 
@@ -173,6 +174,8 @@ Terraform tests use mocked AWS/TLS providers and check the planned two public/tw
 For a future authorized AWS run, see [AWS runbook](terraform/README.md). No credentials belong in this repository. State, local variable files and saved plans are ignored. The provider lock file is committed for reproducibility.
 
 ## Submission and presentation
+
+Start with the **[instructor requirements audit](docs/RUBRIC-AUDIT.md)** for a complete implemented-versus-outstanding checklist.
 
 - [Rubric-to-evidence checklist](docs/SUBMISSION.md)
 - [Demo walkthrough and viva notes](docs/DEMO.md)

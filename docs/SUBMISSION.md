@@ -2,11 +2,11 @@
 
 Deadline supplied by the course: **16 October 2026, 11:59 PM IST**.
 
-- Repository: https://github.com/praneethb7/devOps_Assignment
-- Capstone entry: https://github.com/praneethb7/devOps_Assignment/tree/main/capstone
-- Successful complete pipeline: https://github.com/praneethb7/devOps_Assignment/actions/runs/38868966201
-- Workflow: https://github.com/praneethb7/devOps_Assignment/blob/main/.github/workflows/campuscrate.yml
-- Evidence: https://github.com/praneethb7/devOps_Assignment/tree/main/capstone/evidence
+- Repository: https://github.com/praneethb7/CampusCrate
+- Capstone entry: https://github.com/praneethb7/CampusCrate
+- Successful complete pipeline: https://github.com/praneethb7/CampusCrate/actions/workflows/campuscrate.yml
+- Workflow: https://github.com/praneethb7/CampusCrate/blob/main/.github/workflows/campuscrate.yml
+- Evidence: https://github.com/praneethb7/CampusCrate/evidence
 - Submission form: https://forms.gle/XWAP1vAumDJgAPM1A
 
 ## Suggested project description
@@ -18,10 +18,10 @@ CampusCrate is a campus equipment lending application built with React, FastAPI 
 | Module | Implementation and evidence | Remaining gap |
 |---|---|---|
 | M1 Application / 10 | `backend/app`, Alembic migration, React UI, browser/Ingress screenshots, database capture | None in implemented application scope |
-| M2 Tests / 10 | 15 tests, isolated database, pytest capture, CI PostgreSQL test job | Test output screenshot from the raw-output viewer included |
+| M2 Tests / 10 | 18 tests, isolated database, pytest capture, CI PostgreSQL test job | Test output screenshot from the raw-output viewer included |
 | M3 Git / 5 | Public repository, meaningful capstone commits, ignore rules, commit-history capture | None in source implementation |
 | M4 Docker / 10 | Two non-root images, multi-stage frontend, healthy Compose capture and browser screenshot | Compose output screenshot from the raw-output viewer included |
-| M5 CI/CD / 15 | Successful linked run: tests, frontend build, both images, GHCR SHA tags, Kubernetes smoke deployment | GHCR package-page screenshot can supplement published-image job logs |
+| M5 CI/CD / 15 | Successful linked run: tests, frontend build, both images, GHCR SHA tags, Kubernetes smoke deployment | Public GHCR package-page screenshots and anonymous digest receipts included |
 | M6 DevSecOps / 5 | Both scans passed; raw reports and written explanation in `docs/SECURITY.md` | None in implemented pipeline |
 | M7 Terraform / 15 | Valid HCL, init, committed lock file, tfvars example, mocked-plan assertions | **Real AWS plan, VPC/EKS creation, AWS Console evidence and destroy were not performed** |
 | M8 Kubernetes / 15 | Helm, namespace, 2+ frontend/backend replicas, ClusterIP, Ingress, running-pod captures and browser screenshot | Kubernetes output screenshot from the raw-output viewer included |

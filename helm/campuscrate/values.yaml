@@ -1,12 +1,12 @@
 backend:
-  image: ghcr.io/praneethb7/campuscrate-backend
+  image: ghcr.io/praneethb7/campuscrate-api
   tag: ""
   replicas: 2
   resources:
     requests: {cpu: 100m, memory: 128Mi}
     limits: {cpu: 500m, memory: 256Mi}
 frontend:
-  image: ghcr.io/praneethb7/campuscrate-frontend
+  image: ghcr.io/praneethb7/campuscrate-web
   tag: ""
   replicas: 2
   resources:

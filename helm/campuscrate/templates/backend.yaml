@@ -40,6 +40,8 @@ spec:
             allowPrivilegeEscalation: false
             capabilities: {drop: ["ALL"]}
           env:
+            - name: APP_VERSION
+              value: {{ .Values.backend.tag | quote }}
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
