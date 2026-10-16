@@ -30,3 +30,5 @@ Captured from the actual local stack and GitHub Actions on 16 October 2026.
 | `commits.txt` | Meaningful capstone commit history and attribution |
 
 Text captures are not screenshots of a terminal. AWS provisioning, AWS Console and destroy evidence do not exist because AWS provisioning was not authorized. See `docs/SUBMISSION.md` for outstanding presentation/form steps.
+
+For genuine native Terminal screenshots, use the [interactive capture workflow](../docs/NATIVE-CAPTURES.md). It runs live read-only checks and separately labels saved transcripts; screenshots must be taken and inspected before they can be listed here.
