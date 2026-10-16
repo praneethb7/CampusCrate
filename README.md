@@ -6,6 +6,15 @@ CampusCrate is an original equipment inventory and lending application. Students
 
 ![CampusCrate running through Kubernetes Ingress](evidence/02-kubernetes-ingress.jpg)
 
+## Presentation materials
+
+| Material | Link |
+|---|---|
+| Demo video | <!-- Add video URL here --> |
+| Presentation / PPT | <!-- Add presentation URL here --> |
+
+Video and presentation links are pending.
+
 ## Application behavior
 
 - Create, search, filter, edit and remove equipment.

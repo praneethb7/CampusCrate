@@ -4,10 +4,19 @@ Deadline supplied by the course: **16 October 2026, 11:59 PM IST**.
 
 - Repository: https://github.com/praneethb7/CampusCrate
 - Capstone entry: https://github.com/praneethb7/CampusCrate
-- Successful complete pipeline: https://github.com/praneethb7/CampusCrate/actions/runs/38872115532
+- Successful complete pipeline: https://github.com/praneethb7/CampusCrate/actions/runs/38944770037
 - Workflow: https://github.com/praneethb7/CampusCrate/blob/main/.github/workflows/campuscrate.yml
 - Evidence: https://github.com/praneethb7/CampusCrate/tree/main/evidence
 - Submission form: https://forms.gle/XWAP1vAumDJgAPM1A
+
+## Presentation links
+
+| Material | Link |
+|---|---|
+| Demo video | <!-- Add video URL here --> |
+| Presentation / PPT | <!-- Add presentation URL here --> |
+
+These are empty placeholders. The video and presentation have not been uploaded.
 
 ## Suggested project description
 
