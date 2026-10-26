@@ -14,9 +14,10 @@ Deadline supplied by the course: **16 October 2026, 11:59 PM IST**.
 | Material | Link |
 |---|---|
 | Demo video | <!-- Add video URL here --> |
-| Presentation / PPT | <!-- Add presentation URL here --> |
+| Presentation / PPT | [PowerPoint](../demo/CampusCrate-Capstone.pptx) |
+| Presentation / PDF | [PDF](../demo/CampusCrate-Capstone.pdf) |
 
-These are empty placeholders. The video and presentation have not been uploaded.
+The PowerPoint and PDF are available in `demo/`. The video recording remains pending.
 
 ## Suggested project description
 

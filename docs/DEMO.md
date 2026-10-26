@@ -1,5 +1,7 @@
 # Walkthrough and presentation notes
 
+Presentation: [PowerPoint](../demo/CampusCrate-Capstone.pptx) and [PDF](../demo/CampusCrate-Capstone.pdf). The PowerPoint includes speaker notes for each slide.
+
 ## Eight-minute walkthrough
 
 1. **Application (1 minute).** Open CampusCrate through `http://campuscrate.localhost:8088`. Show availability, search and category filters. Create equipment; lend one unit; show the count decrease; return it and show the count recover. Point out the overdue sample and preserved loan ledger.
