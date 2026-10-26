@@ -33,7 +33,7 @@ Checked against the instructor's [README](https://github.com/Nency-Ravaliya/devo
 ## What is still incomplete
 
 1. **Real AWS evidence:** no real AWS plan, provisioned VPC/EKS, Console screenshot or destroy run. This follows the owner's instruction not to provision. Mock tests do not satisfy those criteria; up to 11 of M7's 15 points depend on real planning/provisioning/destruction, subject to the instructor's evaluation.
-2. **Student presentation:** an eight-minute walkthrough is prepared, but the student still needs to present live or record it. A deployment smoke test is not a substitute for demonstrating understanding.
+2. **Student presentation:** a narrated walkthrough is available in `demo/CampusCrate-Demo.mp4`. It uses captured browser interactions and labelled historical deployment evidence. It does not show a fresh commit-to-updated-deployment sequence, so that presentation criterion remains unverified.
 3. **Official form submission:** the Google Form has not been submitted. Use the official SST email, verify the final links and submit once.
 4. **Exact evidence format:** command output and clearly labelled browser-viewer screenshots are provided. If the instructor requires a native terminal-window screenshot specifically, capture the documented commands in the student's terminal before submission.
 

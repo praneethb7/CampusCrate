@@ -1,8 +1,10 @@
 # Walkthrough and presentation notes
 
+[Condensed narrated video](../demo/CampusCrate-Demo.mp4), approximately 2 minutes 55 seconds. It combines captured application interactions with labelled historical evidence.
+
 Presentation: [PowerPoint](../demo/CampusCrate-Capstone.pptx) and [PDF](../demo/CampusCrate-Capstone.pdf). The PowerPoint includes speaker notes for each slide.
 
-## Eight-minute walkthrough
+## Full walkthrough
 
 1. **Application (1 minute).** Open CampusCrate through `http://campuscrate.localhost:8088`. Show availability, search and category filters. Create equipment; lend one unit; show the count decrease; return it and show the count recover. Point out the overdue sample and preserved loan ledger.
 2. **API and persistence (1 minute).** Open Swagger at `http://127.0.0.1:8001/docs`. Show GET, POST, PUT and DELETE. Explain that a 409 protects loan history or prevents overbooking. Show `kubectl -n campuscrate exec postgres-0 -- psql -U campuscrate -d campuscrate -c '\dt'` and `alembic_version`.

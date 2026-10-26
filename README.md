@@ -10,11 +10,11 @@ CampusCrate is an original equipment inventory and lending application. Students
 
 | Material | Link |
 |---|---|
-| Demo video | <!-- Add video URL here --> |
+| Demo video | [Watch narrated demonstration](demo/CampusCrate-Demo.mp4) |
 | Presentation / PPT | [Download PowerPoint](demo/CampusCrate-Capstone.pptx) |
 | Presentation / PDF | [View PDF](demo/CampusCrate-Capstone.pdf) |
 
-The 16-slide presentation includes speaker notes for the walkthrough. The video recording is pending.
+The narrated demonstration runs for approximately 2 minutes 55 seconds. The 16-slide presentation includes speaker notes for the full walkthrough.
 
 ## Application behavior
 

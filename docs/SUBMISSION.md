@@ -13,11 +13,11 @@ Deadline supplied by the course: **16 October 2026, 11:59 PM IST**.
 
 | Material | Link |
 |---|---|
-| Demo video | <!-- Add video URL here --> |
+| Demo video | [Narrated demonstration](../demo/CampusCrate-Demo.mp4) |
 | Presentation / PPT | [PowerPoint](../demo/CampusCrate-Capstone.pptx) |
 | Presentation / PDF | [PDF](../demo/CampusCrate-Capstone.pdf) |
 
-The PowerPoint and PDF are available in `demo/`. The video recording remains pending.
+The narrated video, PowerPoint, PDF and narration script are available in `demo/`.
 
 ## Suggested project description
 
@@ -36,7 +36,7 @@ CampusCrate is a campus equipment lending application built with React, FastAPI 
 | M7 Terraform / 15 | Valid HCL, init, committed lock file, tfvars example, mocked-plan assertions | **Real AWS plan, VPC/EKS creation, AWS Console evidence and destroy were not performed** |
 | M8 Kubernetes / 15 | Helm, namespace, 2+ frontend/backend replicas, ClusterIP, Ingress, running-pod captures and browser screenshot | Kubernetes output screenshot from the raw-output viewer included |
 | M9 Observability / 10 | Metrics capture, ServiceMonitor UP screenshot, Grafana populated-panel screenshot | None in demonstrated local stack |
-| M10 Presentation / 5 | README, architecture and walkthrough; CI deploy job demonstrates source-to-cluster delivery | Student must present live or provide the required recording |
+| M10 Presentation / 5 | README, architecture and walkthrough; CI deploy job demonstrates source-to-cluster delivery | Narrated recording supplied; a fresh commit-to-updated-deployment demonstration is not included |
 
 No score is guaranteed. The instructor evaluates evidence; code-only AWS work cannot satisfy real-provisioning criteria. Text command captures are included as raw evidence and are not described as screenshots of a terminal window.
 

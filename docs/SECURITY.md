@@ -20,3 +20,14 @@ The backend was rebuilt on `python:3.12-alpine`, retaining a non-root UID, the m
 - CI uses read-only repository access except for the image-publishing jobs, which need `packages: write`.
 
 This is a classroom administrator application without authentication, authorization, public TLS, rate limiting or production backups. Keep the demo on loopback/trusted networks. Public use would require those controls and a managed secret/backup policy. Kubernetes Secrets are base64 encoded and require cluster RBAC/encryption controls for a production installation.
+
+## Later scan result
+
+[Run 40313700369](https://github.com/praneethb7/CampusCrate/actions/runs/40313700369),
+for commit `f673d0233a029f10c203e3ca6fb7b69827f12a42`, blocked publication of the
+frontend on 26 October 2026. Its Trivy report identified three HIGH findings in
+`brotli-libs`, `curl` and `libcurl`. The listed fixed versions were `1.2.1-r0`
+for Brotli and `8.23.0-r0` for curl/libcurl. The security gate remained enabled.
+The clean 16 October scan and successful pipeline shown in the presentation and
+video are historical evidence, not results from this later run. The frontend
+runtime needs package updates and a successful rescan to close these findings.
